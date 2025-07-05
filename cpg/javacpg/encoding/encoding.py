@@ -177,7 +177,7 @@ def encoding_typetokens(encode_path: str, type_list: list, start_idx: int = 0) -
     type2id_name = 'typetoken2id.txt'
     type2id_name = os.path.join(encode_path, type2id_name)
     type_id = list()
-    type_list = [x.strip('\n').replace(',', ' ') for x in type_list]
+    type_list = [x.replace('\n', ' ').replace(',', ' ').strip() for x in type_list]
     type_list = list(set(type_list))
     length = len(type_list)
 
@@ -236,7 +236,7 @@ def encoding_sequence(encode_path: str, func_list: list) -> bool:
     for seq in func_list:
         seq_id = list()
         for _tt in seq:
-            _tt = _tt.strip('\n').replace(',', ' ')
+            _tt = _tt.replace('\n', ' ').replace(',', ' ').strip()
             if _tt not in typetoken_id.keys():
                 logger.error('Cannot find type-id pair. Exit')
                 exit(-1)
