@@ -44,7 +44,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--statistics', default=False, action='store_true',
                         help='print cpg statistics or not')
     parser.add_argument('--lang', type=str, default='c', help='language (c, java)')
-
+    parser.add_argument('--task', type=str, default='clone', 
+                        help='task type: clone (clone detection) or code_smell (code smell detection)')
     
     args = parser.parse_args()
     

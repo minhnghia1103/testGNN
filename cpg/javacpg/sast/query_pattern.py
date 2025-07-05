@@ -14,14 +14,19 @@ class JAVA_QUERY():
         self.JV_LANGUAGE = Language(self.library, 'java')
 
     def class_method_query(self):
-        """Class method matching pattern
-        """
+        """Match method declarations in both classes and interfaces"""
         query = self.JV_LANGUAGE.query("""
+        (
         (class_declaration
-        body: (class_body 
-            (method_declaration) @method))
+            body: (class_body
+                    (method_declaration) @method))
+        )
+        (
+        (interface_declaration
+            body: (interface_body
+                    (method_declaration) @method))
+        )
         """)
-
         return query
     
     def method_declaration_query(self):
@@ -79,12 +84,10 @@ class JAVA_QUERY():
         return query
     
     def class_filed_query(self):
-        """Class field matching pattern
-        """
+        """Match class field names"""
         query = self.JV_LANGUAGE.query("""
         (field_declaration
-        declarator: (
-            variable_declarator 
-            name: * @class_field))
+            (variable_declarator
+                (identifier) @class_field))
         """)
         return query

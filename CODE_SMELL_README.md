@@ -60,7 +60,7 @@ python prepare_code_smell_data.py --input_folder "C:\path\to\your\data" --output
 **Bước 3b: Trích xuất features**
 ```powershell
 cd ..\cpg
-python driver.py --lang java --src_path "C:\path\to\your\data" --encoding --encode_path "..\datasets\code_smell_encoding" --store_iresult --iresult_path "..\datasets\code_smell_inter_results"
+python driver.py --lang java --task code_smell --src_path "C:\path\to\your\data" --encoding --encode_path "..\datasets\code_smell_encoding" --store_iresult --iresult_path "..\datasets\code_smell_inter_results"
 ```
 
 **Bước 3c: Training model**
@@ -135,6 +135,14 @@ python driver.py --lang java --src_path "..\bigclonebench" --encoding --encode_p
 cd cpgnn
 python main_code_smell.py --dataset code_smell_encoding --smell_test_supervised --epoch 50 --lr 0.01 --batch_size_smell 64 --smell_threshold 0.5 --save_model
 ```
+
+### 🧪 **Test Pipeline (Khuyến nghị cho lần đầu chạy)**
+```powershell
+# Chạy script test tự động toàn bộ pipeline
+python test_pipeline.py
+```
+
+### 🚀 **Hướng dẫn chạy**
 
 ## Parameters quan trọng
 

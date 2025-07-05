@@ -48,11 +48,33 @@ def javacpg_main(args):
     
     if args.encoding:    
         batch_encoding_javacpg(args.encode_path, func_list, func_dict)
-        # move clone labels to encoding path
-        if not os.path.exists('../datasets/bigclonebench/clone_labels.txt'):
-            logger.error('Clone labels not found! Please check the path: ../datasets/bigclonebench/clone_labels.txt')
-            exit(1)
-        os.system('cp {} {}'.format('../datasets/bigclonebench/clone_labels.txt', args.encode_path))
+        
+        # Handle different label types based on task
+        if hasattr(args, 'task') and args.task == 'code_smell':
+            # Copy code smell labels for code smell detection task
+            code_smell_labels_path = '../cpgnn/code_smell_labels.csv'
+            if os.path.exists(code_smell_labels_path):
+                logger.info(f'Copying code smell labels from {code_smell_labels_path} to {args.encode_path}')
+                if os.name == 'nt':  # Windows
+                    os.system(f'copy "{code_smell_labels_path}" "{args.encode_path}"')
+                else:  # Unix/Linux
+                    os.system(f'cp "{code_smell_labels_path}" "{args.encode_path}"')
+            else:
+                logger.warning(f'Code smell labels not found at {code_smell_labels_path}')
+                logger.warning('Please run: python cpgnn/prepare_code_smell_data.py --input_folder <your_data_path>')
+        else:
+            # Default: copy clone labels for clone detection task
+            clone_labels_path = '../datasets/bigclonebench/clone_labels.txt'
+            if os.path.exists(clone_labels_path):
+                logger.info(f'Copying clone labels from {clone_labels_path} to {args.encode_path}')
+                if os.name == 'nt':  # Windows
+                    os.system(f'copy "{clone_labels_path}" "{args.encode_path}"')
+                else:  # Unix/Linux
+                    os.system(f'cp "{clone_labels_path}" "{args.encode_path}"')
+            else:
+                logger.error('Clone labels not found! Please check the path: ../datasets/bigclonebench/clone_labels.txt')
+                if not (hasattr(args, 'task') and args.task == 'code_smell'):
+                    exit(1)
     
     if args.statistics:
         print_cpg_statistics_javacpg(func_dict)

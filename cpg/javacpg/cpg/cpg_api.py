@@ -110,8 +110,9 @@ def extract_funcs(dir_path: str = None) -> list:
         file_func = java_parser(file)
         logger.info(f'Parsing file: {file}')
         if len(file_func) == 0:
-            logger.warn(f'Cannot extract functions from {file}')
-            exit(-1)
+            logger.warn(f'Cannot extract functions from {file}, deleting...')
+            os.remove(file)
+            continue
         for func in file_func:
             if not func.has_type('ERROR'):
                 func_list.append(func)
